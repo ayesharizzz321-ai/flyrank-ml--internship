@@ -11,3 +11,5 @@
 * **Prompt:**
   ```text
   Write a python script to clean missing values and outliers in a dataframe.
+You are a Senior Data Engineer specializing in robust ETL pipelines and defensive programming in Python. 
+Write a python script to clean missing values and outliers in a dataframe.
