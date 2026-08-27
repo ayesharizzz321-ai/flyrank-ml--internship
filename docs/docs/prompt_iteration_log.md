@@ -1,16 +1,13 @@
-# Prompt Engineering Technique Iteration Log
+# Prompt Iteration Log: Automated Data Profiling & Cleaning Script Generation
 
-**Target Task (FL-01 Audit):** Automated baseline data validation and missing value audit script generation for search ranking datasets.
+## Task Overview
+* **Goal:** Generate a production-ready Python script using Pandas/NumPy to audit, clean, and profile an incoming tabular dataset.
+* **Target Audience:** Data Science / Engineering team.
 
 ---
 
-## 1. Naive Version (V0)
-
-**Prompt:**
-> Write a script to check missing values in my data.
-
-**Output:**
-```python
-import pandas as pd
-df = pd.read_csv("data.csv")
-print(df.isnull().sum())
+## Iteration 0 (v0): Baseline (Naive Prompt)
+* **Technique:** None (Naive Baseline)
+* **Prompt:**
+  ```text
+  Write a python script to clean missing values and outliers in a dataframe.
