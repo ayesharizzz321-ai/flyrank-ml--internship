@@ -1,0 +1,163 @@
+# Prompt Laddering Assignment
+
+## Baseline (Version 0)
+
+**Prompt:**
+> "Help me with ML data cleaning."
+
+**Output Excerpt:**
+> Data cleaning is essential in machine learning. Here are 5 general steps:
+> 1. Handle missing values by dropping or imputing.
+> 2. Remove duplicates using `.drop_duplicates()`.
+> 3. Encode categorical variables using One-Hot Encoding.
+> 4. Scale features using `StandardScaler`.
+> 5. Split data into train and test sets.
+
+---
+
+## Ladder Iterations
+
+### Version 1: Added Clearer Goal
+
+**Prompt:**
+> "Help me write a Python script for missing value analysis in a pandas dataframe."
+
+**Output Excerpt:**
+> ```python
+> import pandas as pd
+> df = pd.read_csv("data.csv")
+> print(df.isnull().sum())
+> ```
+
+**Four Notes:**
+* **What changed in prompt:** Added a specific task target (pandas missing value analysis script).
+* **What actually improved in output:** Cut out basic machine learning definitions and provided actual executable Python code.
+* **What still failed:** Code is too trivial; it doesn't give percentage metrics or feature filtering.
+* **What to try next:** Add real data context.
+
+---
+
+### Version 2: Added Real Context
+
+**Prompt:**
+> "Help me write a Python script for missing value analysis on an anonymized search ranking CSV containing 50+ features."
+
+**Output Excerpt:**
+> ```python
+> import pandas as pd
+> df = pd.read_csv("content_refresh_anonymized.csv")
+> missing_summary = df.isnull().sum().to_frame("missing_count")
+> missing_summary["percent"] = (df.isnull().sum() / len(df)) * 100
+> print(missing_summary[missing_summary["percent"] > 0])
+> ```
+
+**Four Notes:**
+* **What changed in prompt:** Included specific dataset details (search ranking CSV, 50+ features).
+* **What actually improved in output:** Switched to calculating percentage metrics suited for large feature sets.
+* **What still failed:** Output formatting is unorganized and hard to read for high-dimensional data.
+* **What to try next:** Specify output structure and formatting constraints.
+
+---
+
+### Version 3: Added Specified Output Format
+
+**Prompt:**
+> "Help me write a Python function for missing value analysis on an anonymized search ranking CSV containing 50+ features. Output the result as a styled pandas DataFrame sorted by missing percentage descending."
+
+**Output Excerpt:**
+> ```python
+> def audit_missing_values(df):
+>     missing = df.isnull().sum().to_frame('missing_count')
+>     missing['percent'] = (df.isnull().sum() / len(df)) * 100
+>     return missing[missing['percent'] > 0].sort_values(by='percent', ascending=False).style.background_gradient(cmap='Reds')
+> ```
+
+**Four Notes:**
+* **What changed in prompt:** Requested a modular function returning a sorted, styled DataFrame.
+* **What actually improved in output:** Code became structured into a reusable function with sorted visual highlighting.
+* **What still failed (Honest Moment):** This change made it slightly worse for terminal/notebook environments; `style.background_gradient` throws rendering errors in plain CLI environments without extra dependencies.
+* **What to try next:** Add production/notebook execution constraints.
+
+---
+
+### Version 4: Added Constraints
+
+**Prompt:**
+> "Help me write a Python function for missing value analysis on an anonymized search ranking CSV containing 50+ features. Output the result as a sorted pandas DataFrame without external GUI dependencies like IPython display styles."
+
+**Output Excerpt:**
+> ```python
+> def audit_missing_values(df: pd.DataFrame) -> pd.DataFrame:
+>     null_counts = df.isnull().sum()
+>     total_rows = len(df)
+>     
+>     report = pd.DataFrame({
+>         'missing_count': null_counts,
+>         'missing_pct': (null_counts / total_rows) * 100
+>     })
+>     
+>     return report[report['missing_count'] > 0].sort_values(by='missing_pct', ascending=False).round(2)
+> ```
+
+**Four Notes:**
+* **What changed in prompt:** Added constraint against display-only features.
+* **What actually improved in output:** Code returned to clean, pure data logic compatible with standard Jupyter/Colab runtimes.
+* **What still failed:** Does not include validation handling for empty DataFrames or column type checks.
+* **What to try next:** Add quality criteria and verification requirements.
+
+---
+
+### Version 5: Added Quality Criteria & Verification Requirements
+
+**Prompt:**
+> "Write a production-ready Python function `audit_missing_values(df: pd.DataFrame)` to inspect missing data in tabular datasets. 
+> Requirements:
+> 1. Handle empty DataFrames safely.
+> 2. Calculate missing counts and rounded percentages.
+> 3. Filter for missing values > 0 and sort descending.
+> 4. Include clean docstrings and type hints."
+
+**Output Excerpt:**
+> ```python
+> import pandas as pd
+
+> def audit_missing_values(df: pd.DataFrame) -> pd.DataFrame:
+>     """
+>     Audits missing values in a pandas DataFrame.
+>     
+>     Returns a DataFrame listing features with missing values, 
+>     their absolute counts, and percentage of missingness.
+>     """
+>     if df.empty:
+>         return pd.DataFrame(columns=['missing_count', 'missing_pct'])
+>         
+>     null_counts = df.isnull().sum()
+>     report = pd.DataFrame({
+>         'missing_count': null_counts,
+>         'missing_pct': (null_counts / len(df)) * 100
+>     }).query('missing_count > 0').sort_values(by='missing_pct', ascending=False)
+>     
+>     return report.round(2)
+> ```
+
+**Four Notes:**
+* **What changed in prompt:** Added edge-case handling, type hints, and documentation rules.
+* **What actually improved in output:** Code includes defensive programming guardrails (`df.empty` check) and readable docstrings.
+* **What still failed:** None for basic EDA usage.
+* **What to try next:** Ready for final reusable format.
+
+---
+
+## Final Reusable Prompt
+
+> Write a Python data quality audit function using pandas with the following specification:
+> 
+> **Goal:** Create a reusable function `audit_missing_values(df: pd.DataFrame) -> pd.DataFrame` that analyzes missing data.
+> **Requirements:**
+> 1. Calculate both total missing count and missing percentage per feature.
+> 2. Filter out features with 0 missing values.
+> 3. Sort results by missing percentage in descending order.
+> 4. Format percentages to two decimal places.
+> 5. Safely return an empty report schema if input DataFrame is empty.
+> 6. Provide standard Python type hints and concise docstrings.
+> **Constraints:** Do not import extra visualization libraries; rely strictly on standard pandas operations.
