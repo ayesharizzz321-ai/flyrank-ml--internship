@@ -33,12 +33,12 @@ Added the following standard meta structure to the `<head>` of the portfolio sit
 <!-- Open Graph / Facebook / LinkedIn Social Share Preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="[https://ayesharizzz321-ai.github.io/](https://ayesharizzz321-ai.github.io/)">
+<meta property="og:title" content="Ayesha Rizwan | Data Science Portfolio">
 
-
-
-<meta property="og:title" content="Ayesha Riform.addEventListener('submit', function() {
+form.addEventListener('submit', function() {
   submitButton.disabled = true;
   submitButton.innerText = "Sending...";
-});zwan | Data Science Portfolio">
+});
+  
 <meta property="og:description" content="Machine Learning & Data Analytics Projects by Ayesha Rizwan.">
 <meta property="og:image" content="[https://ayesharizzz321-ai.github.io/assets/preview.png](https://ayesharizzz321-ai.github.io/assets/preview.png)">
