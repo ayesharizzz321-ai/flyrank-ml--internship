@@ -1,4 +1,5 @@
-  # DNS & Web Infrastructure Walkthrough
+
+# DNS & Web Infrastructure Walkthrough
 
 ## 1. How the Internet Finds a Website: The Core Concepts
 When you type a web address into your browser, your computer doesn't naturally know where that site lives. Computers communicate using numerical addresses called **IP addresses** (like `192.0.2.1`). 
